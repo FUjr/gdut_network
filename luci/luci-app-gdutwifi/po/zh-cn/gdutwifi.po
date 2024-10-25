@@ -75,3 +75,6 @@ msgstr "监控信息"
 
 msgid "Login info"
 msgstr "登录信息"
+
+msgid "Go To Readme page"
+msgstr "前往说明页面"
