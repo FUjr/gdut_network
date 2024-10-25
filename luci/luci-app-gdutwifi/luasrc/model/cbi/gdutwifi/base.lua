@@ -1,8 +1,14 @@
 m = Map("gdutwifi")
-m.title = translate("GDUT AUTO LOGIN")
+m.title = translate("GDUT WIFI LOGIN")
 s = m:section(NamedSection,"main","main",translate("Global Settings"))
 o = s:option(Flag,"Enable",translate("Enable Service"))
 
+o = s:option(Button,"_author_url",translate("Go To Readme page"))
+o.inputstyle = "apply"
+o.inputtitle = translate("Click to open the readme page")
+o.write = function()
+    luci.http.redirect("https://github.com/FUjr/gdut_network/blob/main/README.md")
+end
 
 s = m:section(TypedSection,"config",translate("Login instance"))
 s.addremove = true
@@ -16,11 +22,12 @@ o:value("2",translate("Status API"))
 o = s:option(Value,"check_interval",translate("Check Interval"))
 o.datatype = "uinteger"
 
-o = s:option(Value,"username",translate("Username"))
 
 o = s:option(Value,"ac_ip",translate("AC IP"))
 o.datatype = "ip4addr"
 o:value("172.16.254.6","172.16.254.6(" .. translate("GDUT LongDong D/E")..")")
+
+o = s:option(Value,"username",translate("Username"))
 
 
 o = s:option(Value,"password",translate("Password"))

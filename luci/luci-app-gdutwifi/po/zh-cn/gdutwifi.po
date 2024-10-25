@@ -51,3 +51,21 @@ msgstr "认证服务器错误"
 
 msgid "Click to open the readme page"
 msgstr "点击打开说明页面"
+
+msgid "Monitor API"
+msgstr "监控API"
+
+msgid "Status API"
+msgstr "登录状态API"
+
+msgid "Login API"
+msgstr "登录API"
+
+msgid "Login instance"
+msgstr "登录实例"
+
+msgid "Enable Service"
+msgstr "启用服务"
+
+msgid "GDUT WIFI LOGIN"
+msgstr "广工校园网(WIFI)登录"

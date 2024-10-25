@@ -3,7 +3,7 @@ local json = require "luci.jsonc"
 
 module("luci.controller.gdutwifi", package.seeall)
 function index()
-	entry({"admin", "services", "gdutwifi"}, cbi("gdutwifi/base"), translate("GDUT LOGIN"), 20)
+	entry({"admin", "services", "gdutwifi"}, cbi("gdutwifi/base"), translate("GDUT WIFI"), 20)
     entry({"admin", "services", "gdutwifi","get_status"}, call("get_status"))
 end
 function get_status()
