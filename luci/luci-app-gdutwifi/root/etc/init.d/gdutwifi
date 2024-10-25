@@ -1,0 +1,43 @@
+#!/bin/sh /etc/rc.common
+USE_PROCD=1
+START=99
+STOP=1
+
+monitor=/usr/share/gdutwifi/monitor_instance
+config_load gdutwifi
+start_service(){
+    config_get GlobalEnable main Enable 0
+    [ "$GlobalEnable" -eq 0 ] && return
+    config_foreach new_monitor_instance config
+}
+
+
+reload_service(){
+    stop
+    start
+}
+
+new_monitor_instance()
+{
+    config_get Enable $1 Enable 0
+    [ "$Enable" -eq 0 ] && return
+    config_get password $1 password
+    config_get username $1 username
+    config_get check_interval $1 check_interval
+    config_get bind_interface $1 bind_interface
+    config_get force_ip $1 force_ip
+    config_get ac_ip $1 ac_ip
+    config_get Monitor_api $1 Monitor_api
+    procd_open_instance monitor_$1
+    procd_set_param command bash $monitor
+    procd_append_param command "-l $1"
+    [ -n "$ac_ip" ] && procd_append_param command "-w $ac_ip"
+    [ -n "$password" ] && procd_append_param command "-p $password"
+    [ -n "$username" ] && procd_append_param command "-u $username"
+    [ -n "$check_interval" ] && procd_append_param command "-c $check_interval"
+    [ -n "$force_ip" ] && procd_append_param command "-s $force_ip"
+    [ -n "$bind_interface" ] && procd_append_param command "-i $bind_interface"
+    [ -n "$Monitor_api" ] && procd_append_param command "-m $Monitor_api"
+    procd_close_instance
+
+}

@@ -1,0 +1,19 @@
+while getopts "i:u:p:s:l:c:w:m:" opt; do
+    case $opt in
+        i) INTERFACE="-i $OPTARG" ;;
+        u) USERNAME="-u $OPTARG" ;;
+        p) PASSWORD="-p $OPTARG" ;;
+        s) WLAN_USER_IP="-s $OPTARG" ;;
+        l) LOG_FILE_PREFIX="-l $OPTARG" ;;
+        c) CHECK_INTERVAL="$OPTARG" ;;
+        w) AC_IP="-w $OPTARG" ;;
+        m) MONITOR_API="-m $OPTARG" ;;
+        *) echo "Invalid option"; exit 1 ;;
+    esac
+done
+try_login="/usr/share/gdutwifi/try_login.sh"
+[ -z "$CHECK_INTERVAL" ] && CHECK_INTERVAL=5
+while true;do
+    sleep $CHECK_INTERVAL;
+    $try_login $INTERFACE $USERNAME $PASSWORD $WLAN_USER_IP $LOG_FILE_PREFIX $AC_IP $MONITOR_API
+done
