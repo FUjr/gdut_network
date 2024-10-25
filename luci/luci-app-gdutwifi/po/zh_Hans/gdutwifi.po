@@ -69,3 +69,9 @@ msgstr "启用服务"
 
 msgid "GDUT WIFI LOGIN"
 msgstr "广工校园网(WIFI)登录"
+
+msgid "Monitor info"
+msgstr "监控信息"
+
+msgid "Login info"
+msgstr "登录信息"
