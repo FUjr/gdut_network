@@ -24,16 +24,16 @@ done
 AUTH_SERVER="10.0.3.6"
 #MONITOR_URL_1 0: online, 1: offline, 2: already online 4: AC Error
 MONITOR_URL_1="http://%s:801/eportal/portal/login?user_password=0&wlan_ac_ip=%s&user_account=1&wlan_user_ip=%s"
-MONITOR_URL_1=$(printf "$AUTH_SERVER" "$MONITOR_URL_1" "$WLAN_AC_IP" "$WLAN_USER_IP")
+MONITOR_URL_1=$(printf "$MONITOR_URL_1" "$AUTH_SERVER" "$MONITOR_URL_1" "$WLAN_AC_IP" "$WLAN_USER_IP")
 #MONITOR_URL_2 0: offline, 1: online
 MONITOR_URL_2="http://%s/drcom/chkstatus?callback=dr1002"
 MONITOR_URL_2=$(printf "$MONITOR_URL_2" "$AUTH_SERVER")
 #LOGIN_URL 0: failed, 1: success
 LOGIN_URL="http://%s:801/eportal/portal/login?user_password=%s&wlan_ac_ip=%s&user_account=%s&wlan_user_ip=%s"
-LOGIN_URL=$(printf "$AUTH_SERVER" "$LOGIN_URL" "$PASSWORD" "$WLAN_AC_IP" "$USERNAME" "$WLAN_USER_IP" )
+LOGIN_URL=$(printf "$LOGIN_URL" "$AUTH_SERVER" "$LOGIN_URL" "$PASSWORD" "$WLAN_AC_IP" "$USERNAME" "$WLAN_USER_IP" )
 
 _match_json() {
-    echo $1 | sed -n 's/.*(\(.*\))/\1/p'
+    echo "$1" | sed 's/.*\(.*(\(.*\)\).*/\2/p'
 }
 
 
@@ -54,13 +54,13 @@ if [ -n "$L3_DEVICE" ] && [ "$MONITOR_API" -eq 2 ]; then
     RESPONSE=$(curl -s "$MONITOR_URL_2" --interface "$L3_DEVICE" | strings) 
     RESPONSE=$(_match_json "$RESPONSE")
     RES=$(echo "$RESPONSE" | jq -r .result)
-    V46IP=$(echo "$RESPONSE" ||jq -r .v46ip)
+    V46IP=$(echo "$RESPONSE" |jq -r .v46ip)
     # 0: offline, 1: online
     if [ "$RES" -eq 0 ]; then
-        MSG="ip:$V46IP"
+        MSG="IP:$V46IP"
         RET_CODE=1
     else
-        MSG="ip:$V46IP"
+        MSG="IP:$V46IP"
         RET_CODE=2
     fi
 elif [ -n "$L3_DEVICE" ]; then
@@ -74,7 +74,6 @@ else
     RET_CODE=$(echo "$RESPONSE" | jq -r .ret_code) 
     MSG=$(echo "$RESPONSE" | jq -r .msg)
 fi
-
 
 # 当前时间戳
 TIMESTAMP=$(date +%s)

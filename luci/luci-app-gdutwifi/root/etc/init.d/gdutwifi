@@ -17,6 +17,11 @@ reload_service(){
     start
 }
 
+service_triggers()
+{
+	procd_add_reload_trigger "gdutwifi"
+}
+
 new_monitor_instance()
 {
     config_get Enable $1 Enable 0
