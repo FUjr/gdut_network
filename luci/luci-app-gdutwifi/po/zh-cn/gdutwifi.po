@@ -48,3 +48,6 @@ msgstr "认证服务器IP"
 
 msgid "AC Error"
 msgstr "认证服务器错误"
+
+msgid "Click to open the readme page"
+msgstr "点击打开说明页面"

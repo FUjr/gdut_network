@@ -1,0 +1,53 @@
+msgid "Failed"
+msgstr "失败"
+
+msgid "Success"
+msgstr "成功"
+
+msgid "Offline"
+msgstr "离线"
+
+msgid "Online"
+msgstr "在线"
+
+msgid "Already online"
+msgstr "已经在线"
+
+msgid "Last check:"
+msgstr "上次检查："
+
+msgid "Monitor info"
+msgstr "登录信息"
+
+msgid "Login info"
+msgstr "登录信息"
+
+msgid "Enable Instance"
+msgstr "启用实例"
+
+msgid "Check Interval"
+msgstr "检查间隔"
+
+msgid "Bind Interface"
+msgstr "绑定接口"
+
+msgid "Manually Set IP"
+msgstr "手动设置IP"
+
+msgid "Enter the IP address manually for authentication. If this option is specified, the program will use the provided IP address instead of the one associated with the binding interface."
+msgstr "手动输入IP地址以进行身份验证。如果指定此选项，程序将使用提供的IP地址而不是绑定接口关联的IP地址。"
+
+msgid "Select the network interface to bind for authentication. This interface will not only be used to determine the IP address for automatic authentication but also serves as the exit point for the authentication packets."
+msgstr "选择监听网卡，会自动认证该网卡的IP，同时，认证数据包也会走这个网口出"
+
+msgid "GDUT LongDong D/E"
+msgstr "广东工业大学龙洞D/E栋"
+
+msgid "AC IP"
+msgstr "认证服务器IP"
+
+msgid "AC Error"
+msgstr "认证服务器错误"
+
+msgid "Click to open the readme page"
+msgstr "点击打开说明页面"
