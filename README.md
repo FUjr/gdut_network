@@ -2,9 +2,28 @@
 
 ## 项目介绍
 
-GDUT LOGIN 是一款用于自动化登录广东工业大学（GDUT）校园网的工具。该插件旨在简化用户的网络认证过程，提供便捷的校园网络连接，帮助用户以更低的成本享受校园网络服务。
+GDUT WIFI LOGIN 是一款用于自动化登录广东工业大学（GDUT）WIFI校园网的工具，具备定时监控登陆状态，自动登录的功能。可以通过桥接WIFI实现网络共享，也可以根据CPE标签进入后台，将wifi的vlan绑定到网口，实现更稳定更高速的上网。
+在龙洞校区实测2无线账号+1有线账号（直接pppoe）叠加可达到教育网千兆的效果。其中有线账号需要用ua2f 或者将http标记以避免包含Android/ios的ua被检测导致被共享检测机制断网。
+![](imgs/tri_dial_1000M.png)
 
 ![gdut wifi自动认证插件](imgs/gdut_wifi.png)
+
+## 使用方法
+
+### 增加feed源
+
+```
+echo >> feeds.conf.default
+echo 'src-git gdut_network https://github.com/FUjr/gdut_network.git;main' >> feeds.conf.default
+./scripts/feeds update gdut_network
+./scripts/feeds install -a -p gdut_network
+```
+
+### 选择软件包后编译即可
+
+```
+make menuconfig
+```
 
 ## 使用说明
 
