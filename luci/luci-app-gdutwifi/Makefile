@@ -6,12 +6,12 @@ include $(TOPDIR)/rules.mk
 PKG_NAME:=luci-app-gdutwifi
 LUCI_TITLE:=LuCI support for GDUT WIFI
 LUCI_PKGARCH:=all
-PKG_RELEASE:=4
+PKG_RELEASE:=5
 PKG_VERSION:=0.9
 PKG_LICENSE:=GPLv3
 PKG_LINCESE_FILES:=LICENSE
 PKG_MAINTAINER:=Tom <fjrcn@outlook.com>
-LUCI_DEPENDS:=+jq
+LUCI_DEPENDS:=+jq +curl
 		
 
 define Package/$(PKG_NAME)/conffiles

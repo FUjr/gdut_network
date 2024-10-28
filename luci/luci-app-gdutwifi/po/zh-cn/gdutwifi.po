@@ -78,3 +78,9 @@ msgstr "登录信息"
 
 msgid "Go To Readme page"
 msgstr "前往说明页面"
+
+msgid "GDUT LongDong Campus"
+msgstr "广东工业大学龙洞校区"
+
+msgid "GDUT Main Campus"
+msgstr "广东工业大学大学城校区"

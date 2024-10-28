@@ -9,8 +9,9 @@ if [ "$#" -lt 1 ]; then
 fi
 
 # 解析参数
-while getopts "i:u:p:s:l:w:m:" opt; do
+while getopts "a:i:u:p:s:l:w:m:" opt; do
     case $opt in
+        a) AUTH_SERVER="$OPTARG" ;;
         i) INTERFACE="$OPTARG" ;;
         u) USERNAME="$OPTARG" ;;
         p) PASSWORD="$OPTARG" ;;
@@ -21,7 +22,12 @@ while getopts "i:u:p:s:l:w:m:" opt; do
         *) echo "Invalid option"; exit 1 ;;
     esac
 done
-AUTH_SERVER="10.0.3.6"
+# AUTH_SERVER USERNAME PASSWORD WLAN_AC_IP is required
+if [ -z "$AUTH_SERVER" ] || [ -z "$USERNAME" ] || [ -z "$PASSWORD" ] || [ -z "$WLAN_AC_IP" ]; then
+    echo "Usage: $0 -i <interface> -u <username> -p <password> -l <log_prefix> -s <manully set ip> -w <wlan_ac_ip> -m <monitor api>"
+    printf "{"original_response": "Missing required parameters", "status": 0, "timestamp": "%s", "time": "%s"}" "$(date +%s)" "$(date "+%Y-%m-%d %H:%M:%S")" > /tmp/gdutwifi/"${LOG_FILE_PREFIX}_status"
+    exit 1
+fi
 #MONITOR_URL_1 0: online, 1: offline, 2: already online 4: AC Error
 MONITOR_URL_1="http://%s:801/eportal/portal/login?user_password=0&wlan_ac_ip=%s&user_account=1&wlan_user_ip=%s"
 MONITOR_URL_1=$(printf "$MONITOR_URL_1" "$AUTH_SERVER" "$MONITOR_URL_1" "$WLAN_AC_IP" "$WLAN_USER_IP")

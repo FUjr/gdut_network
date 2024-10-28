@@ -1,5 +1,6 @@
-while getopts "i:u:p:s:l:c:w:m:" opt; do
+while getopts "a:i:u:p:s:l:c:w:m:" opt; do
     case $opt in
+        a) AUTH_SERVER="-a $OPTARG" ;;
         i) INTERFACE="-i $OPTARG" ;;
         u) USERNAME="-u $OPTARG" ;;
         p) PASSWORD="-p $OPTARG" ;;
@@ -15,5 +16,5 @@ try_login="/usr/share/gdutwifi/try_login.sh"
 [ -z "$CHECK_INTERVAL" ] && CHECK_INTERVAL=5
 while true;do
     sleep $CHECK_INTERVAL;
-    $try_login $INTERFACE $USERNAME $PASSWORD $WLAN_USER_IP $LOG_FILE_PREFIX $AC_IP $MONITOR_API
+    $try_login $INTERFACE $USERNAME $PASSWORD $WLAN_USER_IP $LOG_FILE_PREFIX $AC_IP $MONITOR_API $AUTH_SERVER
 done
