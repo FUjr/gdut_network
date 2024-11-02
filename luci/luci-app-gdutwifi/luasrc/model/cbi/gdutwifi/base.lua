@@ -4,7 +4,7 @@ s = m:section(NamedSection,"main","main",translate("Global Settings"))
 o = s:option(Flag,"Enable",translate("Enable Service"))
 
 o = s:option(Value,"auth_server",translate("Auth Server"))
-o:value("10.0.3.6",translate("GDUT LongDong Campus")
+o:value("10.0.3.6",translate("GDUT LongDong Campus"))
 o:value("10.0.3.2",translate("GDUT Main Campus"))
 o = s:option(Button,"_author_url",translate("Go To Readme page"))
 o.inputstyle = "apply"
