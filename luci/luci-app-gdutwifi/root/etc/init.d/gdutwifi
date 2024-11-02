@@ -33,7 +33,7 @@ new_monitor_instance()
     config_get force_ip $1 force_ip
     config_get ac_ip $1 ac_ip
     config_get Monitor_api $1 Monitor_api
-    config_get auth_server $1 auth_server
+    config_get auth_server main auth_server
     procd_open_instance monitor_$1
     procd_set_param command sh $monitor
     procd_append_param command "-l $1"

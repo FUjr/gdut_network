@@ -25,23 +25,9 @@ done
 # AUTH_SERVER USERNAME PASSWORD WLAN_AC_IP is required
 if [ -z "$AUTH_SERVER" ] || [ -z "$USERNAME" ] || [ -z "$PASSWORD" ] || [ -z "$WLAN_AC_IP" ]; then
     echo "Usage: $0 -i <interface> -u <username> -p <password> -l <log_prefix> -s <manully set ip> -w <wlan_ac_ip> -m <monitor api>"
-    printf "{"original_response": "Missing required parameters", "status": 0, "timestamp": "%s", "time": "%s"}" "$(date +%s)" "$(date "+%Y-%m-%d %H:%M:%S")" > /tmp/gdutwifi/"${LOG_FILE_PREFIX}_status"
+    printf '{"original_response": "Missing required parameters;auth_server:%s username:%s password:%s wlan_ac_ip:%s", "status": 0, "timestamp": "%s", "time": "%s"}' "$AUTH_SERVER" "$USERNAME" "$PASSWORD" "$WLAN_AC_IP" "$(date +%s)" "$(date "+%Y-%m-%d %H:%M:%S")" > /tmp/gdutwifi/"${LOG_FILE_PREFIX}_status"
     exit 1
 fi
-#MONITOR_URL_1 0: online, 1: offline, 2: already online 4: AC Error
-MONITOR_URL_1="http://%s:801/eportal/portal/login?user_password=0&wlan_ac_ip=%s&user_account=1&wlan_user_ip=%s"
-MONITOR_URL_1=$(printf "$MONITOR_URL_1" "$AUTH_SERVER" "$MONITOR_URL_1" "$WLAN_AC_IP" "$WLAN_USER_IP")
-#MONITOR_URL_2 0: offline, 1: online
-MONITOR_URL_2="http://%s/drcom/chkstatus?callback=dr1002"
-MONITOR_URL_2=$(printf "$MONITOR_URL_2" "$AUTH_SERVER")
-#LOGIN_URL 0: failed, 1: success
-LOGIN_URL="http://%s:801/eportal/portal/login?user_password=%s&wlan_ac_ip=%s&user_account=%s&wlan_user_ip=%s"
-LOGIN_URL=$(printf "$LOGIN_URL" "$AUTH_SERVER" "$LOGIN_URL" "$PASSWORD" "$WLAN_AC_IP" "$USERNAME" "$WLAN_USER_IP" )
-
-_match_json() {
-    echo "$1" | sed 's/.*\(.*(\(.*\)\).*/\2/p'
-}
-
 
 if [ -z "$WLAN_USER_IP" ];then
     # 获取接口的 L3 设备和 IP 地址
@@ -51,6 +37,21 @@ if [ -z "$WLAN_USER_IP" ];then
 else
     [ -z "$LOG_FILE_PREFIX" ] && LOG_FILE_PREFIX="$WLAN_USER_IP"
 fi
+#MONITOR_URL_1 0: online, 1: offline, 2: already online 4: AC Error
+MONITOR_URL_1="http://%s:801/eportal/portal/login?user_password=0&wlan_ac_ip=%s&user_account=1&wlan_user_ip=%s"
+MONITOR_URL_1=$(printf "$MONITOR_URL_1" "$AUTH_SERVER" "$WLAN_AC_IP" "$WLAN_USER_IP")
+#MONITOR_URL_2 0: offline, 1: online
+MONITOR_URL_2="http://%s/drcom/chkstatus?callback=dr1002"
+MONITOR_URL_2=$(printf "$MONITOR_URL_2" "$AUTH_SERVER")
+#LOGIN_URL 0: failed, 1: success
+LOGIN_URL="http://%s:801/eportal/portal/login?user_password=%s&wlan_ac_ip=%s&user_account=%s&wlan_user_ip=%s"
+LOGIN_URL=$(printf "$LOGIN_URL" "$AUTH_SERVER" "$PASSWORD" "$WLAN_AC_IP" "$USERNAME" "$WLAN_USER_IP" )
+_match_json() {
+    #匹配括号中的内容，移除控制字符
+    echo "$1" | cut -d'(' -f2 |cut -d')' -f1 | tr -d '\n' | tr -d '\r' | tr -d '\t' | tr -d '\b' | tr -d '\f' | tr -d '\v'
+}
+
+
 
 # 检查是否在线
 
@@ -89,7 +90,6 @@ TIME=$(date "+%Y-%m-%d %H:%M:%S")
 # 处理返回结果
 if [ "$RET_CODE" -eq 2 ]; then
     # 已经在线
-    echo "Already online: $MSG"
     STATUS_JSON=$(printf '{"original_response": "%s", "status": %d, "timestamp": "%s", "time": "%s"}' "$MSG" "$RET_CODE" "$TIMESTAMP" "$TIME")
 elif [ "$RET_CODE" -eq 4 ];then
     STATUS_JSON=$(printf '{"original_response": "%s", "status": %d, "timestamp": "%s", "time": "%s"}' "$MSG" "$RET_CODE" "$TIMESTAMP" "$TIME")
