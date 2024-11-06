@@ -29,6 +29,7 @@ o.datatype = "uinteger"
 o = s:option(Value,"ac_ip",translate("AC IP"))
 o.datatype = "ip4addr"
 o:value("172.16.254.6","172.16.254.6(" .. translate("GDUT LongDong D/E")..")")
+o:value("172.21.0.1","172.21.0.1(" .. translate("GDUT LongDong Teaching Area")..")")
 o:value("172.16.254.2","172.16.254.2(" .. translate("GDUT Main Campus")..")")
 o = s:option(Value,"username",translate("Username"))
 

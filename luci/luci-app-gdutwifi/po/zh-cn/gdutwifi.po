@@ -84,3 +84,6 @@ msgstr "广东工业大学龙洞校区"
 
 msgid "GDUT Main Campus"
 msgstr "广东工业大学大学城校区"
+
+msgid "GDUT LongDong Teaching Area"
+msgstr "广东工业大学龙洞教学区"
