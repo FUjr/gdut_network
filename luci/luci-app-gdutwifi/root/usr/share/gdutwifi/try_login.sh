@@ -12,6 +12,7 @@ fi
 while getopts "a:i:u:p:s:l:w:m:" opt; do
     case $opt in
         a) AUTH_SERVER="$OPTARG" ;;
+        c) COMFIRM_LOGIN="1" ;;
         i) INTERFACE="$OPTARG" ;;
         u) USERNAME="$OPTARG" ;;
         p) PASSWORD="$OPTARG" ;;
@@ -46,6 +47,9 @@ MONITOR_URL_2=$(printf "$MONITOR_URL_2" "$AUTH_SERVER")
 #LOGIN_URL 0: failed, 1: success
 LOGIN_URL="http://%s:801/eportal/portal/login?user_password=%s&wlan_ac_ip=%s&user_account=%s&wlan_user_ip=%s"
 LOGIN_URL=$(printf "$LOGIN_URL" "$AUTH_SERVER" "$PASSWORD" "$WLAN_AC_IP" "$USERNAME" "$WLAN_USER_IP" )
+#COMFIRM_LOGIN_ULL 1: success
+COMFIRM_LOGIN_ULL="http://%s:801/eportal/portal/custom/operator?callback=dr1003&account=%s&r=1&jsVersion=4.1.3&v=7993&lang=en"
+COMFIRM_LOGIN_ULL=$(printf "$COMFIRM_LOGIN_ULL" "$AUTH_SERVER" "$USERNAME")
 _match_json() {
     #匹配括号中的内容，移除控制字符
     echo "$1" | cut -d'(' -f2 |cut -d')' -f1 | tr -d '\n' | tr -d '\r' | tr -d '\t' | tr -d '\b' | tr -d '\f' | tr -d '\v'
@@ -94,12 +98,16 @@ if [ "$RET_CODE" -eq 2 ]; then
 elif [ "$RET_CODE" -eq 4 ];then
     STATUS_JSON=$(printf '{"original_response": "%s", "status": %d, "timestamp": "%s", "time": "%s"}' "$MSG" "$RET_CODE" "$TIMESTAMP" "$TIME")
 elif [ "$RET_CODE" -eq 1 ]; then
+    
     # 尝试登录
     if [ -n "$L3_DEVICE" ]; then
+        [ -n "$COMFIRM_LOGIN" ] && COMFIRM_RESPONSE=$(curl -s "$COMFIRM_LOGIN_ULL" --interface "$L3_DEVICE")
         LOGIN_RESPONSE=$(curl -s "$LOGIN_URL" --interface "$L3_DEVICE")
     else
+        [ -n "$COMFIRM_LOGIN" ] && COMFIRM_RESPONSE=$(curl -s "$COMFIRM_LOGIN_ULL")
         LOGIN_RESPONSE=$(curl -s "$LOGIN_URL")
     fi
+    [ -n "$COMFIRM_LOGIN" ] &&COMFIRM_RESPONSE=$(_match_json "$COMFIRM_RESPONSE")
     LOGIN_RESPONSE=$(_match_json "$LOGIN_RESPONSE")
     LOGIN_RESULT=$(echo "$LOGIN_RESPONSE" | jq -r .result) #0: failed, 1: success
     LOGIN_MSG=$(echo "$LOGIN_RESPONSE" | jq -r .msg)
